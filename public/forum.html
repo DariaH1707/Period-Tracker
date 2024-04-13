@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Period Forum</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      #post-form {
+        margin-bottom: 20px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 100px;
+        resize: none;
+        margin-bottom: 10px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: blue;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: darkblue;
+      }
+
+      .post {
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+
+      .reply-form {
+        margin-top: 10px;
+      }
+
+      .reply-form input {
+        display: none; 
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Period Forum</h1>
+      <div id="forum">
+        <div id="post-form">
+          <textarea
+            id="post-content"
+            placeholder="Ask a question..."
+          ></textarea>
+          <button onclick="postQuestion()">Post</button>
+        </div>
+        <div id="posts"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      let forum = [];
+
+      function loadForum() {
+        if (localStorage.getItem("forum")) {
+          forum = JSON.parse(localStorage.getItem("forum"));
+        }
+      }
+
+      function saveForum() {
+        localStorage.setItem("forum", JSON.stringify(forum));
+      }
+
+      function postQuestion() {
+        let username = localStorage.getItem("username");
+        let content = document.getElementById("post-content").value.trim();
+        if (!username) {
+          username = prompt("Please enter your name:");
+          if (!username) {
+            alert("Username cannot be empty.");
+            return;
+          }
+          localStorage.setItem("username", username);
+        }
+        if (content === "") {
+          alert("Please enter a question.");
+          return;
+        }
+        let post = {
+          username: username,
+          content: content,
+          timestamp: new Date().toLocaleString(),
+          replies: [],
+        };
+        forum.push(post);
+        saveForum();
+        displayForum();
+        document.getElementById("post-content").value = "";
+      }
+
+      function reply(index) {
+        let replyContent = document.createElement("textarea");
+        replyContent.placeholder = "Your Reply...";
+        let submitBtn = document.createElement("button");
+        submitBtn.textContent = "Submit";
+        submitBtn.onclick = function () {
+          let username = localStorage.getItem("username");
+          let content = replyContent.value.trim();
+          if (!content) {
+            alert("Please enter a reply.");
+            return;
+          }
+          forum[index].replies.push({
+            username: username,
+            content: content,
+            timestamp: new Date().toLocaleString(), 
+          });
+          saveForum();
+          displayForum();
+        };
+        let cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.onclick = function () {
+          displayForum();
+        };
+        let replyDiv = document.createElement("div");
+        replyDiv.classList.add("reply-form");
+        replyDiv.appendChild(replyContent);
+        replyDiv.appendChild(submitBtn);
+        replyDiv.appendChild(cancelBtn);
+        document.getElementById(`replies-${index}`).appendChild(replyDiv);
+      }
+
+      function displayForum() {
+        let postsElement = document.getElementById("posts");
+        postsElement.innerHTML = "";
+        forum.forEach((post, postIndex) => {
+          let postHTML = `
+        <div class="post">
+          <p><strong>${post.username}</strong> (${post.timestamp}): ${post.content}</p>
+          <button onclick="deleteQuestion(${postIndex})">Delete</button>
+          <button onclick="reply(${postIndex})">Reply</button>
+          <div id="replies-${postIndex}" class="replies">
+            ${post.replies
+              .map(
+                (reply, replyIndex) => `
+                  <div class="reply">
+                    <p><strong>${reply.username}</strong> (${reply.timestamp}): ${reply.content}</p>
+                    <button onclick="deleteComment(${postIndex}, ${replyIndex})">Delete</button>
+                  </div>`,
+              )
+              .join("")}
+          </div>
+        </div>
+      `;
+          postsElement.innerHTML += postHTML;
+        });
+      }
+
+      function deleteQuestion(index) {
+        forum.splice(index, 1);
+        saveForum();
+        displayForum();
+      }
+
+      function deleteComment(postIndex, replyIndex) {
+        forum[postIndex].replies.splice(replyIndex, 1);
+        saveForum();
+        displayForum();
+      }
+
+      loadForum();
+      displayForum();
+    </script>
+  </body>
+</html>
