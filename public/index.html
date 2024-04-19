@@ -1,89 +1,360 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="en">
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/10.11.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/10.11.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/10.11.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/10.11.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/10.11.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/10.11.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/10.11.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/10.11.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/10.11.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/10.11.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Period Tracker</title>
+  <link rel="stylesheet" href="styles.css">
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Style the body */
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+    }
+
+    /* Header/logo Title */
+    .header {
+      padding: 80px;
+      text-align: center;
+      background: lightpink;
+      color: black;
+    }
+
+    /* Increase the font size of the heading */
+    .header h1 {
+      font-size: 40px;
+    }
+
+    /* Style the top navigation bar */
+    .navbar {
+      overflow: hidden;
+      background-color: #E15166;
+    }
+
+    /* Style the navigation bar links */
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+      padding-left: 10%;
+      padding-right: 10%;
+      margin-left: 12%;
+      margin-right: 5%;
+    }
+
+    /* center-aligned link */
+    .navbar a.center {
+      float: center;
+    }
+
+    /* Change color on hover */
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    /* Column container */
+    .row {
+      display: -ms-flexbox;
+      /* IE10 */
+      display: flex;
+      -ms-flex-wrap: wrap;
+      /* IE10 */
+      flex-wrap: wrap;
+    }
+
+    /* Create two unequal columns that sits next to each other */
+    /* Sidebar/left column */
+    .side {
+      -ms-flex: 30%;
+      /* IE10 */
+      flex: 30%;
+      background-color: #f1f1f1;
+      padding: 20px;
+    }
+
+    /* Main column */
+    .main {
+      -ms-flex: 70%;
+      /* IE10 */
+      flex: 70%;
+      background-color: white;
+      padding: 20px;
+    }
+
+    * {
+      text-align: center;
+    }
+
+    .input-section {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      /* Change label text color */
+    }
+
+    label.date-label {
+      color: #E15166;
+      /* Pink color for date labels */
+    }
+
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      /* Increase padding for better spacing */
+      margin-bottom: 10px;
+      border-radius: 5px;
+      /* Increase border radius for a softer look */
+      border: 1px solid #ccc;
+      /* Change border color to a lighter shade */
+      box-sizing: border-box;
+      /* Ensure padding is included in width calculation */
+      font-size: 16px;
+      /* Increase font size for better visibility */
+    }
+
+    input[type="date"]:focus {
+      outline: none;
+      /* Remove default focus outline */
+      border-color: #E15166;
+      /* Change border color on focus */
+    }
+
+
+    .input,
+    .select {
+      width: 100%;
+      /* Full width */
+      padding: 10px;
+      /* Padding */
+      margin-bottom: 10px;
+      /* Spacing between elements */
+      border-radius: 5px;
+      /* Rounded corners */
+      border: 1px solid #ccc;
+      /* Border */
+      box-sizing: border-box;
+      /* Include padding in width calculation */
+      font-size: 16px;
+      /* Font size */
+    }
+
+    .input:focus,
+    .select:focus {
+      outline: none;
+      /* Remove focus outline */
+      border-color: #E15166;
+      /* Border color on focus */
+    }
+
+
+    #prediction {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid lightpink;
+      border-radius: 3px;
+    }
+
+
+
+    button {
+      padding: 15px 25px;
+      background-color: pink;
+      color: black;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    button:hover {
+      background-color: #E15166;
+    }
+
+
+    img {
+      width: 60%;
+      /* Adjusted width of the image */
+      height: auto;
+      border-radius: 10px;
+      padding-bottom: 5%;
+      padding-left: 5%;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 20px;
+      text-align: center;
+      background: #E15166;
+    }
+
+    /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 700px) {
+      .row {
+        flex-direction: column;
       }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+    }
+
+    /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+    @media screen and (max-width: 400px) {
+      .navbar a {
+        float: none;
+        width: 100%;
+      }
+    }
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="header">
+    <h1>SS Period Tracker</h1>
+    <p>To Calculate, Analyze and Track your Menstrual Cycle.</p>
+  </div>
+
+  <div class="navbar">
+    <a href="#about">About SS Period Tracker</a>
+    <a href="#why-use">Why use?</a>
+  </div>
+
+  <div class="row">
+    <div class="side">
+      <h2 id="about">About SS Period Tracker</h2>
+      <div class="img">
+        <img src="https://i.pinimg.com/originals/ab/da/73/abda737ca539db59b6ffb5e83c0a4adf.jpg" />
+      </div>
+      <p>The SS (Syntax Sisters) period tracker is a convenient tool designed to help individuals monitor and manage
+        their menstrual cycles effectively. Users input various data points such as the start and end dates of their
+        periods, mood fluctuations, intensity of cramps, cravings, energy levels, and blood collection method. With this
+        information, the tracker calculates the length of each menstrual cycle and provides insightful facts about
+        periods.</p>
+
+
+      <br><br><br>
+      <h3 id="why-use">Why use?</h3>
+      <p>SS Period tracker serves as a valuable companion in:</p>
+      <h4>Navigating the complexities of menstrual health</h4>
+      <p>This aids in understanding the intricacies of one's cycle, including variations in mood, energy levels, and
+        physical symptoms</p>
+      <div class="img">
+        <img src="https://i.pinimg.com/originals/ab/7e/8b/ab7e8bb88e1d34125779046a94557e35.jpg" />
+      </div> <br>
+      <h4>Promoting self-awareness</h4>
+      <p> This helps individuals recognize patterns and responses to menstruation, empowering individuals to make
+        informed choices about their health and lifestyle</p>
+      <div class="img">
+        <img src="https://i.pinimg.com/originals/b6/e6/87/b6e687094f11e465e7d710a6b5754a4e.jpg" />
+      </div>
+      <h4>And informed decision-making regarding one's well-being</h4>
+      <p> This is facilitated by access to comprehensive data and knowledge about menstrual health, enabling individuals
+        to advocate for their needs and seek appropriate support and resources</p>
+      <div class="img">
+        <img src="https://i.pinimg.com/originals/7a/3a/8a/7a3a8a2704ef0f2d2cff6fc5da192129.png" />
+      </div>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
+
+    <div class="main">
+      <h2>Enter your Start and End date of your last Menstrual Cycle</h2>
+      <p>This allows for a better understanding of one's menstrual patterns, enabling individuals to anticipate their
+        periods and plan accordingly</p>
+      <br>
+
+      <div class="container">
+        <div class="input-section">
+          <label for="start-date" class="date-label">Start Date</label>
+          <input type="date" id="start-date" name="start-date">
+        </div>
+
+        <br><br>
+        <div class="input-section">
+          <label for="end-date" class="date-label">End Date</label>
+          <input type="date" id="end-date" name="end-date">
+        </div>
+
+
+
+        <br><br><br><br><br><br><br><br><br>
+        <h2>Enter your following Menstrual Cycle Information</h2>
+        <p> By tracking mood changes, energy levels, and physical symptoms like cramps and cravings, users gain insights
+          into how their bodies respond throughout their menstrual cycle. </p>
+        <div class="input-section">
+          <label for="mood" class="date-label">Mood:</label>
+          <select id="mood" class="select">
+            <option value="Happy">Happy</option>
+            <option value="Sad">Sad</option>
+            <option value="Angry">Angry</option>
+            <option value="Anxious">Anxious</option>
+            <option value="Sensitive">Sensitive</option>
+            <option value="Confident">Confident</option>
+            <option value="Irritable">Irritable</option>
+            <option value="Indifferent">Indifferent</option>
+          </select><br><br>
+
+          <label for="cramps" class="date-label">Cramps (scale 1-10):</label>
+          <input type="number" id="cramps" class="input" min="0" max="10"><br><br>
+
+          <label for="cravings" class="date-label">Cravings:</label>
+          <select id="cravings" class="select">
+            <option value="None">None</option>
+            <option value="Greasy">Greasy</option>
+            <option value="Sweets">Sweets</option>
+            <option value="Salty">Salty</option>
+            <option value="Spicy">Spicy</option>
+            <option value="Carbs">Carbs</option>
+          </select><br><br>
+
+          <label for="energy" class="date-label">Energy Level (scale 1-10):</label>
+          <input type="number" id="energy" class="input" min="0" max="10"><br><br>
+
+          <label for="blood-collection" class="date-label">Blood Collection Method:</label>
+          <select id="blood-collection" class="select">
+            <option value="Pad">Pad</option>
+            <option value="Tampon">Tampon</option>
+            <option value="Menstrual-Cup">Menstrual Cup</option>
+            <option value="Period-Panties">Period Panties</option>
+          </select><br><br>
+
+          <button onclick="calculateCycle()">Calculate</button>
+        </div>
+
+        <div id="prediction"></div><br><br><br><br>
+        <h4> Thank you for using our Period Tracker! You can check out Period Facts,The Forum, Login or Go back to the Homepage by
+          clicking the buttons below</h4> <br>
+        <button onclick="navigateToFactsPage()">Period Facts</button>
+        <br><br>
+        <button onclick="navigateToForum()">Go to Forum</button>
+        <br><br>
+        <button onclick="navigateToLogin()">Go to Login</button>
+        <br><br>
+        <button onclick="navigateToHomepage()">Back to HomePage</button>
+      </div>
+      <script src="script.js"></script>
+    </div>
+  </div>
+
+
+
+  <div class="footer">
+    <h5> Policy | Terms of Agreement | Privacy</h5>
+  </div>
+</body>
+
 </html>

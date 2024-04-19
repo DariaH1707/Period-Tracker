@@ -1,26 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to Period Tracker</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    div {
-      background-color: lightpink;
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://i.pinimg.com/originals/8b/c6/8f/8bc68f0ddecddb8b4b329d5856d669e3.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      /* Use flexbox */
+      flex-direction: column;
+      /* Arrange children vertically */
+    }
+
+
+    .wrapper {
+      flex-grow: 1;
+      /* Grow to fill available space */
+      display: flex;
+      justify-content: center;
+      /* Center horizontally */
+      align-items: flex-start;
+      /* Align at the top */
+      padding-top: 28%;
+    }
+
+    .container {
+      /*margin-top: 25%;*/
+      max-width: 400px;
       text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+      /* Set to relative for absolute positioning */
+      top: 50px;
+      /* Adjust as needed */
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+    }
+
+
+
+
+    .logo {
+      width: 5%;
+      /* Adjusted size of the logo */
+      height: auto;
+      margin-right: 10px;
+    }
+
+    .website-name {
+      font-size: 20px;
+      /* Adjusted font size of the website name */
+      font-weight: bold;
+      color: black;
+      padding-bottom: 5%;
+    }
+
+
+
+
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: pink;
+      color: black;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #E15166;
+    }
+
+    img {
+      width: 20%;
+      /* Adjusted width of the image */
+      height: auto;
+      border-radius: 10px;
+      padding-bottom: 5%;
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY6s0EJV3d15JEAuP6PdvLUnfHp6D4rNjtDApKUAsRZA&s">
-    <h1>Welcome to Period Tracker</h1>
-    <p>This is your personalized period tracker where you can keep track of your menstrual cycle, symptoms, and more.</p><br><br><br>
-    <button onclick="navigateToTracker()">Go to Period Tracker</button>
-    <button onclick="navigateToForum()">Go to Forum</button>
+
+  <div class="header">
+    <img class="logo" src="https://i.pinimg.com/originals/ab/da/73/abda737ca539db59b6ffb5e83c0a4adf.jpg"
+      alt="Calendar Logo">
+    <h1 class="website-name">SS Period Tracker</h1>
   </div>
 
-  <script src="script.js"></script>
+  <div class="wrapper">
+    <div class="container">
+      <h2>Welcome to SS Period Tracker</h2>
+      <p>This is your personalized period tracker where you can keep track of your menstrual cycle, symptoms, and more.
+      </p>
+
+      <button onclick="navigateToTracker()">Go to Period Tracker</button>
+      <br>
+     
+    
+    <script src="script.js"></script>
 </body>
+  
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
